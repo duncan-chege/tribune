@@ -125,6 +125,8 @@ EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
+LOGIN_REDIRECT_URL = "newsToday"        #helps redirect the login
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
