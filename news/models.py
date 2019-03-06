@@ -55,3 +55,9 @@ class Article(models.Model):
         news = cls.objects.filter(title__icontains=search_term)     #filter the model data using the __icontains query filter. This filter will check if any word in the titlefield of our articles matches the search_term.
                                             #the same search_term in views.py
         return news
+
+    class NewsLetterRecepients(models.Model):
+        name = models.CharField(max_length= 30)
+        email = models.EmailField()
+
+        

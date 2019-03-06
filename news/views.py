@@ -13,7 +13,11 @@ def news_today(request):
     if request.method == 'POST':        # form will be submitting sensitive data to the database we are going to use a POST request. 
         form = NewsLetterForm(request.POST)     #pass in the POST request values as an argument.
         if form.is_valid():
-            print('valid')
+            name = form.cleaned_data['your_name']
+            email = form.cleaned_data['email']
+            recepient = NewsLetterRecepients(name = name, email = email)
+            recepient.save()
+            HttpResponseRedirect('news_today')      #redirect the user back to the news_today view function.
     else:
         form = NewsLetterForm()     #If it is not a POST request we just create an empty form instance and then we pass it to our template.
         
