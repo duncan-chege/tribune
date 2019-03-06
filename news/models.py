@@ -56,8 +56,7 @@ class Article(models.Model):
                                             #the same search_term in views.py
         return news
 
-    class NewsLetterRecepients(models.Model):
-        name = models.CharField(max_length= 30)
-        email = models.EmailField()
+class NewsLetterRecipients(models.Model):
+    name = models.CharField(max_length= 30)
+    email = models.EmailField()
 
-        

@@ -1,10 +1,11 @@
 # from django.shortcuts import render
-from django.http  import HttpResponse,Http404
+from django.http  import HttpResponse,Http404,HttpResponseRedirect
 import datetime as dt
 from django.shortcuts import render,redirect
-from .models import Article
+from .models import Article,NewsLetterRecipients
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import NewsLetterForm
+from .email import send_welcome_email
 
 #create your views here    
 def news_today(request):
@@ -15,8 +16,12 @@ def news_today(request):
         if form.is_valid():
             name = form.cleaned_data['your_name']
             email = form.cleaned_data['email']
-            recepient = NewsLetterRecepients(name = name, email = email)
-            recepient.save()
+
+            recipient = NewsLetterRecipients(name = name, email = email)
+            recipient.save()
+            send_welcome_email(name,email)
+            form = NewsLetterForm()     #instead of showing post request argument show empty form no need to give HttpResponseRedirect()
+            
             HttpResponseRedirect('news_today')      #redirect the user back to the news_today view function.
     else:
         form = NewsLetterForm()     #If it is not a POST request we just create an empty form instance and then we pass it to our template.
