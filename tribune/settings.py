@@ -60,7 +60,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'news.apps.NewsConfig',     #this will allow the projects configurations to be reflected also in our application.
-    'bootstrap3'
+    'bootstrap3',
+    'tinymce'
 ]
 
 MIDDLEWARE = [
