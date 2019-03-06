@@ -6,6 +6,7 @@ from .models import Article,NewsLetterRecipients
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import NewsLetterForm
 from .email import send_welcome_email
+from django.contrib.auth.decorators import login_required
 
 #create your views here    
 def news_today(request):
@@ -55,6 +56,7 @@ def search_results(request):
         
         return render(request, 'all-news/search.html',{"articles": searched_articles})
 
+@login_required(login_url='/accounts')
 def article(request,article_id):
     try:
         article = Article.objects.get(id = article_id)      #query the database for a single object using the get function. and pass in the article_id.
