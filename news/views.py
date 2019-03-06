@@ -4,14 +4,21 @@ import datetime as dt
 from django.shortcuts import render,redirect
 from .models import Article
 from django.core.exceptions import ObjectDoesNotExist
+from .forms import NewsLetterForm
 
 #create your views here    
 def news_today(request):
     date=dt.date.today()
     news = Article.todays_news()
-    return render(request, 'all-news/today-news.html', {"date": date, "news":news})     #the last argument is a dictionary of values that we pass into the template
+    if request.method == 'POST':        # form will be submitting sensitive data to the database we are going to use a POST request. 
+        form = NewsLetterForm(request.POST)     #pass in the POST request values as an argument.
+        if form.is_valid():
+            print('valid')
+    else:
+        form = NewsLetterForm()     #If it is not a POST request we just create an empty form instance and then we pass it to our template.
+        
+    return render(request, 'all-news/today-news.html', {"date": date, "news":news, "letterForm": form})     #the last argument is a dictionary of values that we pass into the template
                                                                 #referred to as the Context in Django
-
     return HttpResponse(html)
 
 # View Function to present news from past days
