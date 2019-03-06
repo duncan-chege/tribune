@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'',include('news.urls')),
     url(r'^accounts/', include('registration.backends.simple.urls')),       #configure the URLs to use the one step workflow.
-    url(r'^logout/$', views.logout, {"next_page": '/'})     #provide the keyword argument next_page to define the page to go to after the user is logged out.
+    url(r'^logout/$', views.logout, {"next_page": '/'}),     #provide the keyword argument next_page to define the page to go to after the user is logged out.
+    url(r'^tinymce/', include('tinymce.urls'))   
 ]

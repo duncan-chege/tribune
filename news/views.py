@@ -4,7 +4,7 @@ import datetime as dt
 from django.shortcuts import render,redirect
 from .models import Article,NewsLetterRecipients
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import NewsLetterForm
+from .forms import NewsLetterForm, NewArticleForm
 from .email import send_welcome_email
 from django.contrib.auth.decorators import login_required
 
@@ -63,4 +63,19 @@ def article(request,article_id):
     except ObjectDoesNotExist:
         raise Http404
     return render(request,"all-news/article.html", {"article": article})
+
+@login_required(login_url='/accounts/login/')
+def new_article(request):
+    current_user = request.user     #we get the current user by checking the request.
+    if request.method == 'POST':
+        form = NewArticleForm(request.POST, request.FILES)      #pass in the request.FILES argument because we are going to be uploading an Image file and we want to process that in our form.
+        if form.is_valid():
+            article = form.save(commit=False)       #validate the form and call the form.save function. We pass in commit = False to prevent it from saving to the database.
+            article.editor = current_user       #update the object editor attribute by setting it to the current user
+            article.save()
+        return redirect('NewsToday')
+
+    else:
+        form = NewArticleForm()
+    return render(request, 'new_article.html', {"form": form})
     

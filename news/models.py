@@ -1,6 +1,7 @@
 from django.db import models
 import datetime as dt   #returns a specific day
 from django.contrib.auth.models import User
+from tinymce.models import HTMLField
 
 # Create your models here.
 
@@ -19,7 +20,7 @@ class tags(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=60)
-    post = models.TextField()
+    post = models.HTMLField()       #tinymce editor saves the input as raw html to the database.
     editor = models.ForeignKey(User,on_delete=models.CASCADE)
     tags = models.ManyToManyField(tags)     #a many to many relationship telling django to create a separate join table.
     pub_date = models.DateTimeField(auto_now_add = True)     #stores the exact date and time our article was posted
