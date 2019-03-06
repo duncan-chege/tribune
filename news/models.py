@@ -4,10 +4,23 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class tags(models.Model):
+    name = models.CharField(max_length =30)
+
+    def __str__(self):
+        return self.name
+
+    def save_tags(self):
+        self.save()
+
+    class Meta:     #Meta subclass specifies model-specific options. This helps in ordering data
+        verbose_name_plural = 'Tags'
+
+
 class Article(models.Model):
     title = models.CharField(max_length=60)
     post = models.TextField()
-    
+    editor = models.ForeignKey(User,on_delete=models.CASCADE)
     tags = models.ManyToManyField(tags)     #a many to many relationship telling django to create a separate join table.
     pub_date = models.DateTimeField(auto_now_add = True)     #stores the exact date and time our article was posted
     article_image = models.ImageField(upload_to = 'articles/')
@@ -28,19 +41,6 @@ class Article(models.Model):
         news = cls.objects.filter(title__icontains=search_term)     #filter the model data using the __icontains query filter. This filter will check if any word in the titlefield of our articles matches the search_term.
                                             #the same search_term in views.py
         return news
-
-
-class tags(models.Model):
-    name = models.CharField(max_length =30)
-
-    def __str__(self):
-        return self.name
-
-    def save_tags(self):
-        self.save()
-
-    class Meta:     #Meta subclass specifies model-specific options. This helps in ordering data
-        verbose_name_plural = 'Tags'
 
 class NewsLetterRecipients(models.Model):
     name = models.CharField(max_length= 30)
